@@ -1,0 +1,182 @@
+public class VillagerHandler implements CommandExecutor, Listener{
+
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if(sender instanceof Player) {
+			Player player = (Player) sender;
+			if(player.hasPermission("citybuild.shop")) {
+				if(args.length == 0) {
+					new ShopVillager(player.getLocation());
+					player.sendMessage(ShopVillager.prefix + "§aDer Shop wurde erfolgreich erstellt!");
+					
+				}else {
+					player.sendMessage(ShopVillager.prefix + "§cBitte benutze §6/setshop§c!");
+				}
+			}else {
+				player.sendMessage(ShopVillager.prefix + "§cKein Recht!");
+			}
+			
+		}
+		return false;
+	}
+	
+	@EventHandler
+	public void handleShopInteract(PlayerInteractEntityEvent e) {
+		Player p = e.getPlayer();
+		
+		if(!(e.getRightClicked() instanceof Villager)) return;
+		
+		Villager shop = (Villager) e.getRightClicked();
+		e.setCancelled(true);
+		if(shop.getCustomName().equals(ShopVillager.VILLAGER_NAME)) {
+			Inventory inv = Bukkit.createInventory(null, 27, ShopVillager.VILLAGER_NAME);
+		
+			ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+			inv.setItem(0, i);
+			inv.setItem(1, i);
+			inv.setItem(2, i);
+			inv.setItem(3, i);
+			inv.setItem(4, i);
+			inv.setItem(5, i);
+			inv.setItem(6, i);
+			inv.setItem(7, i);
+			inv.setItem(8, i);
+
+			inv.setItem(9, new ItemManager(Material.WOOD).setDisplayName("§7§l« §9§lBaumaterialien §7§l»").addLoreLine("§7§m-------------------").addLoreLine("§7Hier findest du alle Items,").addLoreLine("§7die du für dein eigenes Haus").addLoreLine("§7benötigst§8.").addLoreLine("§7§m-------------------").build());
+			inv.setItem(11, new ItemManager(Material.COOKED_BEEF).setDisplayName("§7§l« §e§lErnährung §7§l»").addLoreLine("§7§m-------------------").addLoreLine("§7Hier findest du Items,").addLoreLine("§7die du für deinen Hunger").addLoreLine("§7brauchst§8.").addLoreLine("§7§m-------------------").build());
+			inv.setItem(13, new ItemManager(Material.WATCH).setDisplayName("§7§l« §b§lSonstiges §7§l»").addLoreLine("§7§m-------------------").addLoreLine("§7Hier findest du Items,").addLoreLine("§7die man gut und günstig verkaufen kann§8.").addLoreLine("§7§m-------------------").build());
+			inv.setItem(15, new ItemManager(Material.YELLOW_FLOWER).setDisplayName("§7§l« §c§lDekoration §7§l»").addLoreLine("§7§m-------------------").addLoreLine("§7Hier findest du Items,").addLoreLine("§7die du zur Verschönerung deines").addLoreLine("§7Hauses benötigst§8.").addLoreLine("§7§m-------------------").build());
+			inv.setItem(17, new ItemManager(Material.BEACON).setDisplayName("§7§l« §6§lSeltenes §7§l»").addLoreLine("§7§m-------------------").addLoreLine("§7Hier findest du Items,").addLoreLine("§7die sehr wertvoll und selten sind§8.").addLoreLine("§7§m-------------------").build());
+			
+			inv.setItem(18, i);
+			inv.setItem(19, i);
+			inv.setItem(20, i);
+			inv.setItem(21, i);
+			inv.setItem(22, i);
+			inv.setItem(23, i);
+			inv.setItem(24, i);
+			inv.setItem(25, i);
+			inv.setItem(26, i);
+
+			p.playSound(p.getLocation(), Sound.CHEST_OPEN, (float)2.5, (float)0.5);
+
+			p.openInventory(inv);
+			p.sendMessage(ShopVillager.prefix + "§aDu hast den Shop erfolgreich geöffnet!");	
+		}
+	}
+	@EventHandler
+	public void handleInvClick(InventoryClickEvent e) {
+		Player p = (Player) e.getWhoClicked();
+		  
+		if(e.getInventory().getName().equals(ShopVillager.VILLAGER_NAME)) {
+			e.setCancelled(true);
+			
+			if(e.getCurrentItem().getType() == Material.WOOD) {
+				
+				Inventory inv = Bukkit.createInventory(null, 27, "§7§l« §9§lBaumaterialien §7§l»");
+				
+				ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+				inv.setItem(0, i);
+				inv.setItem(1, i);
+				inv.setItem(2, i);
+				inv.setItem(3, i);
+				inv.setItem(4, i);
+				inv.setItem(5, i);
+				inv.setItem(6, i);
+				inv.setItem(7, i);
+				inv.setItem(8, i);
+
+				inv.setItem(9, new ItemManager(Material.STONE).setDisplayName("§7§l« §8Stein §7§l»").build());
+				inv.setItem(11, new ItemManager(Material.DIRT).setDisplayName("§7§l« §9Erde §7§l»").build());
+				inv.setItem(13, new ItemManager(Material.WOOD).setDisplayName("§7§l« §eHolz §7§l»").build());
+				inv.setItem(15, new ItemManager(Material.GLASS).setDisplayName("§7§l« §aGlas §7§l»").build());
+				inv.setItem(17, new ItemManager(Material.STAINED_CLAY).setData((short)11).setDisplayName("§7§l« §bTon §7§l»").build());
+				
+				inv.setItem(18, i);
+				inv.setItem(19, i);
+				inv.setItem(20, i);
+				inv.setItem(21, i);
+				inv.setItem(22, i);
+				inv.setItem(23, i);
+				inv.setItem(24, i);
+				inv.setItem(25, i);
+				inv.setItem(26, i);
+
+				p.playSound(p.getLocation(), Sound.CHEST_OPEN, (float)2.5, (float)0.5);
+
+				p.openInventory(inv);
+			}	
+			
+		 
+		 if(p.getInventory().getName().equals("§7§l« §9§lBaumaterialien §7§l»")) {
+			 e.setCancelled(true);
+			 
+			 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§7§l« §8Stein §7§l»")) {
+				 
+				 Inventory inv = Bukkit.createInventory(null, 27, "§7§l« §8Steine §7§l»");
+					
+					ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+					inv.setItem(0, i);
+					inv.setItem(1, i);
+					inv.setItem(2, i);
+					inv.setItem(3, i);
+					inv.setItem(4, i);
+					inv.setItem(5, i);
+					inv.setItem(6, i);
+					inv.setItem(7, i);
+					inv.setItem(8, i);
+
+					inv.setItem(10, new ItemManager(Material.STONE).setDisplayName("§7§l« §8Stein §7§l»").build());
+					inv.setItem(11, new ItemManager(Material.STONE).setData((short)1).setDisplayName("§7§l« §8Granit §7§l»").build());
+					inv.setItem(12, new ItemManager(Material.STONE).setData((short)2).setDisplayName("§7§l« §8poliertes Granit §7§l»").build());
+					inv.setItem(13, new ItemManager(Material.STONE).setData((short)3).setDisplayName("§7§l« §8Diorit §7§l»").build());
+					inv.setItem(14, new ItemManager(Material.STONE).setData((short)4).setDisplayName("§7§l« §8poliertes Diorit §7§l»").build());
+					inv.setItem(15, new ItemManager(Material.STONE).setData((short)5).setDisplayName("§7§l« §8Andesit §7§l»").build());
+					inv.setItem(16, new ItemManager(Material.STONE).setData((short)6).setDisplayName("§7§l« §8poliertes Andesit §7§l»").build());
+					
+					inv.setItem(18, i);
+					inv.setItem(19, i);
+					inv.setItem(20, i);
+					inv.setItem(21, i);
+					inv.setItem(22, i);
+					inv.setItem(23, i);
+					inv.setItem(24, i);
+					inv.setItem(25, i);
+					inv.setItem(26, i);
+
+					p.playSound(p.getLocation(), Sound.CHEST_OPEN, (float)2.5, (float)0.5);
+
+					p.openInventory(inv);
+				 
+				 
+			 }
+		 }
+		}
+		 
+		 
+	 }
+	
+	@EventHandler
+	public void handleShopDamage(EntityDamageByEntityEvent e) {
+		
+		if(!(e.getEntity() instanceof Villager)) return;
+		Villager shop = (Villager) e.getEntity();
+		
+		if(!shop.getCustomName().equals(ShopVillager.VILLAGER_NAME)) return;
+		e.setCancelled(true);
+		
+		if(!(e.getDamager() instanceof Player)) return;
+		Player p = (Player) e.getDamager();
+		if(p.hasPermission("citybuild.shop.kill")) {
+			if(p.getItemInHand().getType() == Material.LAVA_BUCKET) {
+				shop.setHealth(0);
+				p.sendMessage(ShopVillager.prefix + "§aDu hast den Shop entfernt");
+				
+			}
+			
+		}
+	}
+	
+	
+}
